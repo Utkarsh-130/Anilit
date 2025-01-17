@@ -1,11 +1,14 @@
-import { View } from 'react-native';
-import { Text } from 'react-native-paper';
+import React from 'react';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import  HomeScreen  from './home';
 
-export default function Home() {
+const queryClient = new QueryClient();
+
+export default function App() {
   return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text variant="headlineMedium">Home Screen</Text>
-    </View>
+    <QueryClientProvider client={queryClient}>
+      <HomeScreen />
+    </QueryClientProvider>
   );
 }
 

@@ -2,6 +2,7 @@
   "expo": {
     "name": "anilis",
     "slug": "anilis",
+      "displayName": "Anilis",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
@@ -35,6 +36,9 @@
         }
       ]
     ],
+    
+
+
     "experiments": {
       "typedRoutes": true
     }
