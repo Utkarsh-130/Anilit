@@ -1,17 +1,16 @@
 import React from 'react';
 import { View, FlatList, StyleSheet } from 'react-native';
-import { Text, ActivityIndicator } from 'react-native-paper';
+import { Text } from 'react-native-paper';
 import { useGetAllAnime, Anime } from '@/components/commons/getAllAnimeQuery';
-import Animeitem from './Animeitem';
+import Animeitem from '@/app/(tabs)/(nobott)/Animeitem'
 import { SafeAreaView } from 'react-native-safe-area-context';
-
 const HomeScreen = () => {
   const { data, isLoading } = useGetAllAnime();
 
   if (isLoading) {
     return (
       <View style={styles.container}>
-        <ActivityIndicator size="large" />
+        <Text>Loading...</Text>
       </View>
     );
   }
@@ -41,7 +40,7 @@ const HomeScreen = () => {
         renderItem={renderItem}
         keyExtractor={(item) => item?.id?.toString() || Math.random().toString()}
         ListEmptyComponent={
-          <Text variant="headlineMedium">No anime data available</Text>
+          <Text>No anime data available</Text>
         }
       />
     </SafeAreaView>

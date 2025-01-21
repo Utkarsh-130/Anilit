@@ -3,7 +3,10 @@ import axios from 'axios';
 const allAnimeUrl = "https://api.jikan.moe/v4/anime"
 
 export interface Anime {
+  id: number;
   title: string;
+  title_japanese: string;
+  type: string;
   images: {
     jpg: {
       image_url: string;

@@ -1,11 +1,14 @@
-import { View } from 'react-native';
-import { Text } from 'react-native-paper';
+import React from 'react';
+import { QueryClientProvider } from '@tanstack/react-query';
+import queryClient from '@/app/queryClient';
+import MyComponent from './ss';
 
 export default function Search() {
   return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text variant="headlineMedium">Search Screen</Text>
-    </View>
+    <QueryClientProvider client={queryClient}>
+      <MyComponent />
+    </QueryClientProvider>
   );
 }
+
 
