@@ -1,19 +1,20 @@
 import * as React from 'react';
 import { View, FlatList, StyleSheet, Dimensions } from 'react-native';
-import { Searchbar, Text } from 'react-native-paper';
+import { Searchbar, Text, useTheme } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useGetAllAnime } from '@/components/commons/hooks/getfullAnimeQuery';
-import Animeitem from './(nobott)/Animeitem';
+import { useGetAllAnime,Anime } from '@/components/commons/hooks/getfullAnimeQuery';
+import Animeitem from './(nobott)/Animesearch';
 import { debounce } from 'lodash';
-
+import { ActivityIndicator, MD2Colors } from 'react-native-paper';
 const { width } = Dimensions.get('window');
 
 const MyComponent = () => {
+  const theme = useTheme();
   const [searchQuery, setSearchQuery] = React.useState('');
   const { data, isLoading } = useGetAllAnime(searchQuery);
 
   const renderItem = ({ item }: { item: Anime }) => (
-    <View style={styles.animeItem}>
+    <View style={[styles.animeItem, {  }]}>
       <Animeitem obj={item} />
     </View>
   );
@@ -28,7 +29,7 @@ const MyComponent = () => {
   if (isLoading) {
     return (
       <View style={styles.centerContainer}>
-        <Text variant="bodyLarge">Loading...</Text>
+        <ActivityIndicator animating={true} color={MD2Colors.red800} />
       </View>
     );
   }
@@ -45,8 +46,8 @@ const MyComponent = () => {
         <FlatList
           data={data.data}
           renderItem={renderItem}
-          keyExtractor={(item) => item.id.toString()}
-          numColumns={2}
+          keyExtractor={(item) => item?.id?.toString() || Math.random().toString()}
+          numColumns={1}
           contentContainerStyle={styles.listContainer}
         />
       ) : (
@@ -76,7 +77,7 @@ const styles = StyleSheet.create({
     padding: 8,
   },
   animeItem: {
-    width: width / 2 - 16,
+    width: width - 16,
     margin: 8,
   }
 });

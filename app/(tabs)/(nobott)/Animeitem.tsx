@@ -1,6 +1,7 @@
+
 import { ImageBackground, StyleSheet, TouchableOpacity, View } from 'react-native'
 import React from 'react'
-import { Text } from 'react-native-paper'
+import { ThemedText } from '@/components/ThemedText'
 import { useRouter } from 'expo-router'
 import { Anime } from '@/components/commons/getAllAnimeQuery'
 
@@ -9,9 +10,9 @@ export default function Animeitem({ obj }: { obj: Anime }) {
 
   return (
     <TouchableOpacity 
-      style={styles.container} 
+      style={styles.vw} 
       onPress={() => router.push({
-        pathname: "/(tabs)/(nobott)/opening" as const,
+        pathname: '/opening',
         params: { animeData: JSON.stringify(obj) }
       })}
     >
@@ -19,39 +20,34 @@ export default function Animeitem({ obj }: { obj: Anime }) {
         <ImageBackground 
           source={{ uri: obj.images.jpg.image_url }} 
           style={styles.image}
-          imageStyle={styles.imageStyle}
-        />
+          imageStyle={{ borderRadius: 28, padding: 10 }}
+        >
+        </ImageBackground>
       </View>
-      <Text style={styles.title} numberOfLines={2}>
-        {obj.title}
-      </Text>
+  
+      <View>
+        <ThemedText style={{ flex: 1, flexDirection: 'row', width: 160 }}>
+          {obj.title}
+        </ThemedText>
+      </View>
     </TouchableOpacity>
   )
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    borderRadius: 8,
-    overflow: 'hidden',
-    backgroundColor: '#fff',
-    elevation: 2,
+  image: {
+    width: 180,
+    height: 300,
+    padding: 10,
   },
   imageContainer: {
-    aspectRatio: 2/3,
-    width: '100%',
-  },
-  image: {
     flex: 1,
-    resizeMode: 'cover',
+    flexDirection: 'row',
+    borderRadius: 28,
+    overflow: 'hidden', 
   },
-  imageStyle: {
-    borderTopLeftRadius: 8,
-    borderTopRightRadius: 8,
-  },
-  title: {
-    padding: 8,
-    fontSize: 14,
-    textAlign: 'center',
+  vw: {
+    backgroundColor: '#00fff000',
+    borderRadius: 28,
   }
-});
+})
