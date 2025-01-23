@@ -1,46 +1,56 @@
 import * as React from 'react';
-import { View, FlatList, StyleSheet } from 'react-native';
-import { Searchbar } from 'react-native-paper';
+import { View, FlatList, StyleSheet, Dimensions } from 'react-native';
+import { Searchbar, Text } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useGetAllAnime, Anime } from '@/components/commons/getAllAnimeQuery';
-import Animeitem from '@/app/(tabs)/(nobott)/Animeitem';
+import { useGetAllAnime, Anime } from '@/components/commons/hooks/getfullAnimeQuery';
+import Animeitem from './(nobott)/Animeitem';
+import { debounce } from 'lodash';
+
+const { width } = Dimensions.get('window');
 
 const MyComponent = () => {
   const [searchQuery, setSearchQuery] = React.useState('');
-  const { data, isLoading } = useGetAllAnime();
+  const { data, isLoading } = useGetAllAnime(searchQuery);
 
-  const filteredAnime = React.useMemo(() => {
-    if (!data?.data) return [];
-    return data.data.filter(anime => 
-      anime.title.toLowerCase().includes(searchQuery.toLowerCase())
+  const renderItem = ({ item }: { item: Anime }) => (
+    <View style={styles.animeItem}>
+      <Animeitem obj={item} />
+    </View>
+  );
+
+  const handleSearch = React.useCallback((text: string) => {
+    setSearchQuery(text);
+  }, []);
+
+  if (isLoading) {
+    return (
+      <View style={styles.centerContainer}>
+        <Text variant="bodyLarge">Loading...</Text>
+      </View>
     );
-  }, [data, searchQuery]);
-
-  const renderItem = ({ item, index }: { item: Anime; index: number }) => {
-    if (index % 2 === 0) {
-      return (
-        <View style={styles.rowContainer}>
-          <Animeitem obj={item} />
-          {filteredAnime[index + 1] && <Animeitem obj={filteredAnime[index + 1]} />}
-        </View>
-      );
-    }
-    return null;
-  };
+  }
 
   return (
     <SafeAreaView style={styles.container}>
       <Searchbar
         placeholder="Search anime"
-        onChangeText={setSearchQuery}
+        onChangeText={handleSearch}
         value={searchQuery}
         style={styles.searchBar}
       />
-      <FlatList
-        data={filteredAnime}
-        renderItem={renderItem}
-        keyExtractor={(item) => item.id.toString()}
-      />
+      {data?.data && data.data.length > 0 ? (
+        <FlatList
+          data={data.data}
+          renderItem={renderItem}
+          keyExtractor={(item) => item.id.toString()}
+          numColumns={2}
+          contentContainerStyle={styles.listContainer}
+        />
+      ) : (
+        <View style={styles.centerContainer}>
+          <Text variant="bodyLarge">No results found</Text>
+        </View>
+      )}
     </SafeAreaView>
   );
 };
@@ -48,16 +58,24 @@ const MyComponent = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#fff',
+  },
+  centerContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   searchBar: {
     margin: 10,
+    elevation: 4,
   },
-  rowContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    alignItems: 'center',
-    paddingHorizontal: 10,
-    marginVertical: 10,
+  listContainer: {
+    padding: 8,
+  },
+  animeItem: {
+    width: width / 2 - 16,
+    margin: 8,
   }
 });
+
 export default MyComponent;

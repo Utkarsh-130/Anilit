@@ -71,6 +71,16 @@ export default function TabLayout() {
           },
         }}
       />
+        <Tab.Screen
+        name="upcoming"
+        component={require('./upcoming').default}
+        options={{
+          tabBarLabel: 'Home',
+          tabBarIcon: ({ color, size }) => {
+            return <Icon name="home" size={size} color={color} />;
+          },
+        }}
+      />
       <Tab.Screen
         name="search"
         component={require('./search').default}

@@ -1,17 +1,17 @@
 import { ImageBackground, StyleSheet, TouchableOpacity, View } from 'react-native'
 import React from 'react'
-import { ThemedText } from '@/components/ThemedText'
+import { Text } from 'react-native-paper'
 import { useRouter } from 'expo-router'
-import { Anime } from '@/components/commons/getAllAnimeQuery'
+import { Anime } from '@/components/commons/hooks/getfullAnimeQuery'
 
 export default function Animeitem({ obj }: { obj: Anime }) {
   const router = useRouter();
 
   return (
     <TouchableOpacity 
-      style={styles.vw} 
+      style={styles.container} 
       onPress={() => router.push({
-        pathname: '/opening',
+        pathname: "/opening",
         params: { animeData: JSON.stringify(obj) }
       })}
     >
@@ -19,34 +19,39 @@ export default function Animeitem({ obj }: { obj: Anime }) {
         <ImageBackground 
           source={{ uri: obj.images.jpg.image_url }} 
           style={styles.image}
-          imageStyle={{ borderRadius: 28, padding: 10 }}
-        >
-        </ImageBackground>
+          imageStyle={styles.imageStyle}
+        />
       </View>
-  
-      <View>
-        <ThemedText style={{ flex: 1, flexDirection: 'row', width: 160 }}>
-          {obj.title}
-        </ThemedText>
-      </View>
+      <Text style={styles.title} numberOfLines={2}>
+        {obj.title}
+      </Text>
     </TouchableOpacity>
   )
 }
 
 const styles = StyleSheet.create({
-  image: {
-    width: 180,
-    height: 300,
-    padding: 10,
+  container: {
+    flex: 1,
+    borderRadius: 8,
+    overflow: 'hidden',
+    backgroundColor: '#fff',
+    elevation: 2,
   },
   imageContainer: {
-    flex: 1,
-    flexDirection: 'row',
-    borderRadius: 28,
-    overflow: 'hidden', 
+    aspectRatio: 2/3,
+    width: '100%',
   },
-  vw: {
-    backgroundColor: '#00fff000',
-    borderRadius: 28,
+  image: {
+    flex: 1,
+    resizeMode: 'cover',
+  },
+  imageStyle: {
+    borderTopLeftRadius: 8,
+    borderTopRightRadius: 8,
+  },
+  title: {
+    padding: 8,
+    fontSize: 14,
+    textAlign: 'center',
   }
-})
+});

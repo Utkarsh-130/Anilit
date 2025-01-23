@@ -4,7 +4,8 @@
         "anilis",
         "Animeitem",
         "netinfo",
-        "openingscreen"
+        "openingscreen",
+        "Pressable"
     ],
     "java.compile.nullAnalysis.mode": "automatic"
 }

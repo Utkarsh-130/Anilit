@@ -22,10 +22,12 @@ export default function Opening() {
       headerBackgroundColor={{dark: 'black', light: 'white'}}
     >
       <SafeAreaView>
+        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
      <Button icon="camera" mode="contained" onPress={() => console.log('Pressed')}>
  
     <ThemedText>{anime.type}</ThemedText>
   </Button>
+  </View>
     
  
         <ThemedText>{anime.title}</ThemedText>

@@ -2,7 +2,7 @@
   "expo": {
     "name": "anilis",
     "slug": "anilis",
-      "displayName": "Anilis",
+    "displayName": "Anilis",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
@@ -34,11 +34,9 @@
           "resizeMode": "contain",
           "backgroundColor": "#ffffff"
         }
-      ]
+      ],
+      "expo-font"
     ],
-    
-
-
     "experiments": {
       "typedRoutes": true
     }
