@@ -2,7 +2,7 @@ import * as React from 'react';
 import { View, FlatList, StyleSheet, Dimensions } from 'react-native';
 import { Searchbar, Text } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useGetAllAnime, Anime } from '@/components/commons/hooks/getfullAnimeQuery';
+import { useGetAllAnime,Anime } from '@/components/commons/hooks/getfullAnimeQuery';
 import Animeitem from './(nobott)/Animeitem';
 import { debounce } from 'lodash';
 
@@ -18,9 +18,12 @@ const MyComponent = () => {
     </View>
   );
 
-  const handleSearch = React.useCallback((text: string) => {
-    setSearchQuery(text);
-  }, []);
+  const handleSearch = React.useCallback(
+    debounce((text: string) => {
+      setSearchQuery(text);
+    }, 500),
+    []
+  );
 
   if (isLoading) {
     return (

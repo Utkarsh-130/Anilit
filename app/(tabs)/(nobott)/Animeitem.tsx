@@ -2,7 +2,7 @@ import { ImageBackground, StyleSheet, TouchableOpacity, View } from 'react-nativ
 import React from 'react'
 import { Text } from 'react-native-paper'
 import { useRouter } from 'expo-router'
-import { Anime } from '@/components/commons/hooks/getfullAnimeQuery'
+import { Anime } from '@/components/commons/getAllAnimeQuery'
 
 export default function Animeitem({ obj }: { obj: Anime }) {
   const router = useRouter();
@@ -11,7 +11,7 @@ export default function Animeitem({ obj }: { obj: Anime }) {
     <TouchableOpacity 
       style={styles.container} 
       onPress={() => router.push({
-        pathname: "/opening",
+        pathname: "/(tabs)/(nobott)/opening" as const,
         params: { animeData: JSON.stringify(obj) }
       })}
     >

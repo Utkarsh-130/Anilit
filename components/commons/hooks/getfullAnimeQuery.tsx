@@ -3,7 +3,7 @@ import axios from 'axios';
 
 // Update base URL to include search parameter only when query exists
 const getAllAnimeUrl = (query: string) => 
-  query ? `https://api.jikan.moe/v4/anime?q=${encodeURIComponent(query)}&sfw` 
+  query ? `https://api.jikan.moe/v4/anime?q=${encodeURIComponent(query)}&nsfw` 
   : 'https://api.jikan.moe/v4/anime?sfw';
 
 export interface Anime {
@@ -42,10 +42,11 @@ const getAllAnimeQuery = async (query: string): Promise<AnimeResponse> => {
 }
 
 export const useGetAllAnime = (query: string = '') => {
-    const {isLoading, data} = useQuery({
+    const { isLoading, data } = useQuery({
         queryKey: ['allAnime', query],
         queryFn: () => getAllAnimeQuery(query),
         enabled: true,
+        staleTime: 1000 * 60 * 5, // 5 minutes
     });
-    return {data, isLoading};
+    return { data, isLoading };
 }

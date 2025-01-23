@@ -10,7 +10,7 @@ import { FC } from "react";
 import React from "react";
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
-export default function account() {
+export default function Account() {
     return (
         <GestureHandlerRootView style={{ flex: 1 }}>
             <ThemedSafeAreaView style={{ flex: 1 }}>
