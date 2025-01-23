@@ -72,12 +72,12 @@ export default function TabLayout() {
         }}
       />
         <Tab.Screen
-        name="upcoming"
-        component={require('./upcoming').default}
+        name="Manga"
+        component={require('./manga').default}
         options={{
-          tabBarLabel: 'Home',
+          tabBarLabel: 'Book',
           tabBarIcon: ({ color, size }) => {
-            return <Icon name="home" size={size} color={color} />;
+            return <Icon name="book-open-variant" size={size} color={color} />;
           },
         }}
       />

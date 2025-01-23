@@ -2,7 +2,7 @@ import * as React from 'react';
 import { View, FlatList, StyleSheet, Dimensions } from 'react-native';
 import { Searchbar, Text } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useGetAllAnime,Anime } from '@/components/commons/hooks/getfullAnimeQuery';
+import { useGetAllAnime } from '@/components/commons/hooks/getfullAnimeQuery';
 import Animeitem from './(nobott)/Animeitem';
 import { debounce } from 'lodash';
 
@@ -61,7 +61,7 @@ const MyComponent = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#000',
   },
   centerContainer: {
     flex: 1,
