@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, FlatList, StyleSheet, Dimensions } from 'react-native';
+import { View, FlatList, StyleSheet, Dimensions, useColorScheme } from 'react-native';
 import { Searchbar, Text, useTheme } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useGetAllAnime,Anime } from '@/components/commons/hooks/getfullAnimeQuery';
@@ -7,7 +7,8 @@ import Animeitem from './(nobott)/Animesearch';
 import { debounce } from 'lodash';
 import { ActivityIndicator, MD2Colors } from 'react-native-paper';
 const { width } = Dimensions.get('window');
-
+ const colorScheme = useColorScheme();
+  const isDarkMode = colorScheme === 'dark';
 const MyComponent = () => {
   const theme = useTheme();
   const [searchQuery, setSearchQuery] = React.useState('');
@@ -39,6 +40,7 @@ const MyComponent = () => {
       <Searchbar
         placeholder="Search anime"
         onChangeText={handleSearch}
+       
         value={searchQuery}
         style={styles.searchBar}
       />
@@ -62,7 +64,7 @@ const MyComponent = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#000',
+    backgroundColor: isDarkMode ? '#000' : '#fff',
   },
   centerContainer: {
     flex: 1,

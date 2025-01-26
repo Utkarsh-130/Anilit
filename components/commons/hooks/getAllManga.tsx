@@ -1,12 +1,21 @@
 import {useQuery} from '@tanstack/react-query';
 import axios from 'axios';
-const allAnimeUrl = "https://api.jikan.moe/v4/manga"
+const getallMangaUrl = "https://api.jikan.moe/v4/manga"
 
-export interface Anime {
+
+export interface Manga {
   id: number;
   title: string;
   title_japanese: string;
   type: string;
+  episodes: number;
+  members: number;
+  genres: {
+    id: number;
+    name: string;
+  }[];
+
+
   images: {
     jpg: {
       image_url: string;
@@ -24,26 +33,25 @@ export interface Anime {
   score: number;
 }
 
-interface AnimeResponse {
-  data: Anime[];
+interface MangaResponse {
+  data: Manga[];
   pagination: {
     last_visible_page: number;
     has_next_page: boolean;
   };
 }
 
-const getAllAnimeQuery = async (): Promise<AnimeResponse> => {
-    const response = await axios.get(allAnimeUrl);
+const getAllAnimeQuery = async (query: string): Promise<MangaResponse> => {
+    const response = await axios.get(`${getallMangaUrl}?${query}`);
     return response.data;
 }
 
-const useGetAllAnime = () => {
-    const {isLoading, data} = useQuery({
-        queryKey: ['allAnime'],
-        queryFn: getAllAnimeQuery
+export const useGetAllAnime = (query: string = '') => {
+    const { isLoading, data } = useQuery({
+        queryKey: ['allAnime', query],
+        queryFn: () => getAllAnimeQuery(query),
+        enabled: true,
+        staleTime: 1000 * 60 * 5, // 5 minutes
     });
-    return {data, isLoading};
+    return { data, isLoading };
 }
-
-export { useGetAllAnime };
-export type { Anime as MangaType, AnimeResponse as MangaResponse };

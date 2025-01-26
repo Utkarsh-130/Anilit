@@ -11,6 +11,14 @@ export interface Anime {
   title: string;
   title_japanese: string;
   type: string;
+  episodes: number;
+  members: number;
+  genres: {
+    id: number;
+    name: string;
+  }[];
+
+
   images: {
     jpg: {
       image_url: string;
