@@ -1,14 +1,12 @@
 {
   "expo": {
-    "name": "anilis",
-    "slug": "anilis",
-    "displayName": "Anilis",
+    "name": "Anilit",
+    "slug": "Anilit",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
-    "newArchEnabled": true,
     "ios": {
       "supportsTablet": true
     },
@@ -39,6 +37,12 @@
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "aa5a5f75-55d0-4f08-bc43-7b24ffa009fe"
+      }
     }
   }
 }

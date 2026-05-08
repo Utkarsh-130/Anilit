@@ -55,3 +55,24 @@ export const useGetAllAnime = (query: string = '') => {
     });
     return { data, isLoading };
 }
+export interface External {
+  name: string;
+  url: string;
+}
+
+interface ExternalResponse {
+  data: External[];
+}
+
+const getMangaExternalQuery = async (id: number): Promise<ExternalResponse> => {
+    const response = await axios.get(`https://api.jikan.moe/v4/manga/${id}/external`);
+    return response.data;
+}
+
+export const useGetMangaExternal = (id: number) => {
+    return useQuery({
+        queryKey: ['mangaExternal', id],
+        queryFn: () => getMangaExternalQuery(id),
+        staleTime: 1000 * 60 * 60, // 1 hour
+    });
+}
