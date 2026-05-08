@@ -12,6 +12,7 @@ const { width } = Dimensions.get('window');
 const MyComponent = () => {
   const theme = useTheme();
   const [searchQuery, setSearchQuery] = React.useState('');
+  const [inputText, setInputText] = React.useState('');
   const { data, isLoading } = useGetAllAnime(searchQuery);
 
   const renderItem = ({ item }: { item: Anime }) => (
@@ -20,12 +21,17 @@ const MyComponent = () => {
     </View>
   );
 
-  const handleSearch = React.useCallback(
+  const debouncedSearch = React.useCallback(
     debounce((text: string) => {
       setSearchQuery(text);
     }, 500),
     []
   );
+
+  const handleSearch = (text: string) => {
+    setInputText(text);
+    debouncedSearch(text);
+  };
 
   if (isLoading) {
     return (
@@ -36,14 +42,21 @@ const MyComponent = () => {
   }
 
   return (
-    <SafeAreaView style={styles.container}>
-      <Searchbar
-        placeholder="Search anime"
-        onChangeText={handleSearch}
-       
-        value={searchQuery}
-        style={styles.searchBar}
-      />
+    <SafeAreaView style={[styles.container, { backgroundColor: theme.colors.background }]}>
+      <View style={styles.searchWrapper}>
+        <View style={[styles.searchShadow, { backgroundColor: theme.colors.shadow }]} />
+        <View style={[styles.searchContainer, { backgroundColor: theme.colors.surface, borderColor: theme.colors.onSurface }]}>
+          <Searchbar
+            placeholder="SEARCH ANIME..."
+            onChangeText={handleSearch}
+            value={inputText}
+            style={styles.searchBar}
+            inputStyle={[styles.searchInput, { color: theme.colors.onSurface }]}
+            placeholderTextColor={theme.colors.onSurfaceVariant}
+            iconColor={theme.colors.primary}
+          />
+        </View>
+      </View>
       {data?.data && data.data.length > 0 ? (
         <FlatList
           data={data.data}
@@ -54,7 +67,7 @@ const MyComponent = () => {
         />
       ) : (
         <View style={styles.centerContainer}>
-          <Text variant="bodyLarge">No results found</Text>
+          <Text variant="bodyLarge" style={{ color: theme.colors.onSurface }}>No results found</Text>
         </View>
       )}
     </SafeAreaView>
@@ -64,19 +77,40 @@ const MyComponent = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: isDarkMode ? '#000' : '#fff',
   },
   centerContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
   },
+  searchWrapper: {
+    margin: 16,
+    position: 'relative',
+    transform: [{ rotate: '-2deg' }],
+  },
+  searchShadow: {
+    position: 'absolute',
+    top: 6,
+    left: 6,
+    right: -6,
+    bottom: -6,
+  },
+  searchContainer: {
+    borderWidth: 4,
+    overflow: 'hidden',
+  },
   searchBar: {
-    margin: 10,
-    elevation: 4,
+    backgroundColor: 'transparent',
+    elevation: 0,
+    height: 60,
+  },
+  searchInput: {
+    fontFamily: 'CarterOne_400Regular',
+    fontSize: 18,
   },
   listContainer: {
     padding: 8,
+    paddingBottom: 100, // Space for persona tab bar
   },
   animeItem: {
     width: width - 16,

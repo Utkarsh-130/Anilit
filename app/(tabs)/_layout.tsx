@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, useColorScheme } from 'react-native';
+import { View, StyleSheet, useColorScheme, TouchableOpacity } from 'react-native';
 
 import { CommonActions } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -18,47 +18,44 @@ export default function TabLayout() {
         headerShown: false,
       }}
       tabBar={({ navigation, state, descriptors, insets }) => (
-        <BottomNavigation.Bar
-          navigationState={state}
-          safeAreaInsets={insets}
-          style={{
-            backgroundColor: colorScheme === 'dark' ? '#1a1a1a' : '#ffffff'
-          }}
-          onTabPress={({ route, preventDefault }) => {
-            const event = navigation.emit({
-              type: 'tabPress',
-              target: route.key,
-              canPreventDefault: true,
-            });
+        <View style={styles.tabBarWrapper}>
+          <View style={[styles.tabBarShadow, { backgroundColor: theme.colors.shadow }]} />
+          <View style={[styles.tabBarContainer, { backgroundColor: theme.colors.surface, borderColor: theme.colors.onSurface }]}>
+            {state.routes.map((route, index) => {
+              const { options } = descriptors[route.key];
+              const isFocused = state.index === index;
+              const color = isFocused ? theme.colors.onPrimary : theme.colors.onSurface;
 
-            if (event.defaultPrevented) {
-              preventDefault();
-            } else {
-              navigation.dispatch({
-                ...CommonActions.navigate(route.name, route.params),
-                target: state.key,
-              });
-            }
-          }}
-          renderIcon={({ route, focused, color }) => {
-            const { options } = descriptors[route.key];
-            if (options.tabBarIcon) {
-              return options.tabBarIcon({ focused, color, size: 24 });
-            }
-            return null;
-          }}
-          getLabelText={({ route }) => {
-            const { options } = descriptors[route.key];
-            const label =
-              options.tabBarLabel !== undefined
-                ? options.tabBarLabel.toString()
-                : options.title !== undefined
-                ? options.title
-                : route.name;
+              const onPress = () => {
+                const event = navigation.emit({
+                  type: 'tabPress',
+                  target: route.key,
+                  canPreventDefault: true,
+                });
 
-            return label;
-          }}
-        />
+                if (!isFocused && !event.defaultPrevented) {
+                  navigation.navigate(route.name);
+                }
+              };
+
+              return (
+                <TouchableOpacity
+                  key={route.key}
+                  onPress={onPress}
+                  style={[
+                    styles.tabItem,
+                    isFocused && { backgroundColor: theme.colors.primary },
+                    { transform: [{ skewX: index % 2 === 0 ? '-10deg' : '10deg' }] }
+                  ]}
+                >
+                  <View style={{ transform: [{ skewX: index % 2 === 0 ? '10deg' : '-10deg' }] }}>
+                    {options.tabBarIcon && options.tabBarIcon({ focused: isFocused, color, size: 28 })}
+                  </View>
+                </TouchableOpacity>
+              );
+            })}
+          </View>
+        </View>
       )}
     >
       <Tab.Screen
@@ -106,7 +103,28 @@ export default function TabLayout() {
 }
 
 const styles = StyleSheet.create({
-  container: {
+  tabBarWrapper: {
+    position: 'absolute',
+    bottom: 20,
+    left: 16,
+    right: 16,
+    height: 70,
+  },
+  tabBarShadow: {
+    position: 'absolute',
+    top: 6,
+    left: 6,
+    right: -6,
+    bottom: -6,
+    transform: [{ skewX: '-5deg' }],
+  },
+  tabBarContainer: {
+    flexDirection: 'row',
+    height: '100%',
+    borderWidth: 4,
+    overflow: 'hidden',
+  },
+  tabItem: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',

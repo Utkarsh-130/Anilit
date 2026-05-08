@@ -138,7 +138,7 @@ export default function Opening() {
           </View>
 
           <View style={styles.actionRow}>
-            {anime.trailer?.url && (
+            {anime.trailer?.url && !isManga && (
               <View style={styles.mainActionContainer}>
                 <View style={styles.mainActionShadow} />
                 <Button 
@@ -150,6 +150,21 @@ export default function Opening() {
                   buttonColor="#000"
                 >
                   WATCH TRAILER
+                </Button>
+              </View>
+            )}
+            {isManga && (
+              <View style={styles.mainActionContainer}>
+                <View style={styles.mainActionShadow} />
+                <Button 
+                  mode="contained" 
+                  icon="book-open-page-variant" 
+                  onPress={() => router.push({ pathname: '/mangachapters', params: { mangaTitle: anime.title } })}
+                  style={styles.mainButton}
+                  labelStyle={styles.buttonLabel}
+                  buttonColor="#000"
+                >
+                  READ MANGA
                 </Button>
               </View>
             )}
